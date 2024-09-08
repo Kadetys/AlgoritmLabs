@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\algoritm.labs\\ailab1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0B7D1AED-7CF0-472A-BE71-E38C32D0B1B5}|ailab1\\ailab1.vcxproj|C:\\Users\\Admin\\Desktop\\algoritm.labs\\ailab1\\ailab1\\ailab1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0B7D1AED-7CF0-472A-BE71-E38C32D0B1B5}|ailab1\\ailab1.vcxproj|solutionrelative:ailab1\\ailab1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ailab1.cpp",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\algoritm.labs\\ailab1\\ailab1\\ailab1.cpp",
+              "RelativeDocumentMoniker": "ailab1\\ailab1.cpp",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\algoritm.labs\\ailab1\\ailab1\\ailab1.cpp",
+              "RelativeToolTip": "ailab1\\ailab1.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-09-03T11:50:22.622Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
