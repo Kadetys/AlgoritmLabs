@@ -1,18 +1,22 @@
 ﻿
 #include <iostream>
 #include <time.h>
+#include<locale.h>
 
 int main()
 {
-
+    setlocale(LC_ALL, "rus");
     int i = 0;
-    int m[5];
+    int r;
+    printf("Введите размер массива:\n");
+    scanf_s("%d", &r);
+    int* m = new int[r];
     srand(time(0));
-    while (i < 5) {
+    while (i < r) {
         m[i] = rand() % 100;
         i++;
     }
-    for (int j = 0; j < 5; j++) {
+    for (int j = 0; j < r; j++) {
         printf("%d \n", m[j]);
     }
 }
