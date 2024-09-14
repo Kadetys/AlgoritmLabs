@@ -1,6 +1,7 @@
 ﻿#include <time.h>
 #include <iostream>
 #include<locale.h>
+#include <omp.h>
 
 int main(void)
 {
@@ -50,11 +51,14 @@ int main(void)
 	}
 	start = clock();
 
+#pragma omp for num_threads(16) collapse(2)
+
 	for (i = 0; i < m; i++)
 	{
 		for (j = 0; j < m; j++)
 		{
 			elem_c = 0;
+#pragma omp critical
 			for (r = 0; r < m; r++)
 			{
 				elem_c = elem_c + a[i][r] * b[r][j];
