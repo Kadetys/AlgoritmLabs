@@ -30,9 +30,10 @@
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
               "ToolTip": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
               "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
-              "ViewState": "AQIAADgEAAAAAAAAAAAqwEoEAAAAAAAA",
+              "ViewState": "AQIAADgEAAAAAAAAAAAcwEoEAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-09-10T17:26:30.629Z"
+              "WhenOpened": "2024-09-10T17:26:30.629Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -54,7 +55,7 @@
               "RelativeDocumentMoniker": "ailab1\\ailab1.cpp",
               "ToolTip": "C:\\Users\\Admin\\Desktop\\algoritm.labs\\ailab1\\ailab1\\ailab1.cpp",
               "RelativeToolTip": "ailab1\\ailab1.cpp",
-              "ViewState": "AQIAACQAAAAAAAAAAAAAADYAAAAAAAAA",
+              "ViewState": "AQIAAFoAAAAAAAAAAAAAAG8AAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-09-03T11:50:22.622Z",
               "EditorCaption": ""
