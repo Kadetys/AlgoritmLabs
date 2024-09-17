@@ -55,66 +55,59 @@ double qs(int* items, int left, int right) //вызов функции: qs(items
 }
 int main() {
     setlocale(LC_ALL, "rus");
-    int mas[100000];
     double time_q, time_s;
     int h = 0;
     int i = 0;
-    int n = 0;
+    int n[5];
+    int* mas;
     srand(time(0));
-    printf("Введите размер массива:\n");
-    scanf_s("%d", &n);
-    while (1) {
-    printf("Выберите режим работы алгоритма:\n 1.Случайное заполнение массива\n 2.Заполнение массива по возрастанию\n 3.Заполнение массива по убыванию\n"); 
-    printf(" 4.Заполнение массива  сначала по возрастанию, потом по убыванию\n");
-    scanf_s("%d", &h);
-    switch (h) {
-    case 1:
-        for (i = 0; i < n; i++) {
-            mas[i] = rand() % (n * 100);
+    printf("Введите пять размеров массивов для сбора аналитики:\n");
+    scanf_s("%d %d %d %d %d", &n[0], &n[1], &n[2],&n[3], &n[4]);
+    for(int j = 0; j<5; j++){
+         mas = (int*)malloc(n[j] * sizeof(int));
+        for (i = 0; i < n[j];  i++) {
+            mas[i] = rand() % (n[j] * 100);
         }
-        printf("Заполнение массива выполнено\n");
-        break;
-    case 2:
+        printf("\nСлучайное заполнение массива размером %d выполнено\n", n[j]);
+        time_s = shell(mas, n[j]);
+        printf(" Время сортировки методом Шелла: %f\n ", time_s);
+        time_q = qs(mas, 0, n[j] - 1);
+        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
         i = 0;
-        while (i < n) {
+        while (i < n[j]) {
             mas[i] = i;
             i++;
         }
-        printf("Заполнение массива выполнено\n");
-        break;
-    case 3:
+        printf("\nЗаполнение массива по возрастанию размером %d выполнено\n", n[j]);
+        time_s = shell(mas, n[j]);
+        printf(" Время сортировки методом Шелла: %f\n ", time_s);
+        time_q = qs(mas, 0, n[j] - 1);
+        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
         i = 0;
-        while (i < n) {
-            mas[i] = (i - n) * -1;
+        while (i < n[j]) {
+            mas[i] = (i - n[j]) * -1;
             i++;
         }
-        printf("Заполнение массива выполнено\n");
-        break;
-    case 4:
+        printf("\nЗаполнение массива по убыванию размером %d выполнено\n", n[j]);
+        time_s = shell(mas, n[j]);
+        printf("Время сортировки методом Шелла: %f\n ", time_s);
+        time_q = qs(mas, 0, n[j] - 1);
+        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
         i = 0;
-        while (i < n) {
-            if (i < (n / 2)) {
+        while (i < n[j]) {
+            if (i < (n[j] / 2)) {
                 mas[i] = i;
             }
             else {
-                mas[i] = (i - n) * -1;
+                mas[i] = (i - n[j]) * -1;
             }
             i++;
         }
-        printf("Заполнение массива выполнено\n");
-        break;
-    default:
-        printf("Ошибка, выберите один из представленных режимов\n");
-        break;
-    }
-        if (h > 0 and h < 5) {
-            time_s = shell(mas, n);
-            printf(" \nВремя сортировки методом Шелла: %f\n ", time_s);
-            time_q = qs(mas, 0, n - 1);
-            printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
-            break;
-            
-        }
+        printf("\nЗаполнение массива по возрастанию и убыванию размером %d выполнено\n", n[j]);
+        time_s = shell(mas, n[j]);
+        printf(" Время сортировки методом Шелла: %f\n ", time_s);
+        time_q = qs(mas, 0, n[j] - 1);
+        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
     }
 
     return 0;
