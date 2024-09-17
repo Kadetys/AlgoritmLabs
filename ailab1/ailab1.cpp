@@ -59,21 +59,24 @@ int main() {
     double time_q, time_s;
     int h = 0;
     int i = 0;
+    int n = 0;
     srand(time(0));
+    printf("Введите размер массива:\n");
+    scanf_s("%d", &n);
     while (1) {
     printf("Выберите режим работы алгоритма:\n 1.Случайное заполнение массива\n 2.Заполнение массива по возрастанию\n 3.Заполнение массива по убыванию\n"); 
     printf(" 4.Заполнение массива  сначала по возрастанию, потом по убыванию\n");
     scanf_s("%d", &h);
     switch (h) {
     case 1:
-        for (i = 0; i < 10000; i++) {
-            mas[i] = rand() % 10000;
+        for (i = 0; i < n; i++) {
+            mas[i] = rand() % (n * 100);
         }
         printf("Заполнение массива выполнено\n");
         break;
     case 2:
         i = 0;
-        while (i < 10000) {
+        while (i < n) {
             mas[i] = i;
             i++;
         }
@@ -81,20 +84,20 @@ int main() {
         break;
     case 3:
         i = 0;
-        while (i < 10000) {
-            mas[i] = (i - 10000) * -1;
+        while (i < n) {
+            mas[i] = (i - n) * -1;
             i++;
         }
         printf("Заполнение массива выполнено\n");
         break;
     case 4:
         i = 0;
-        while (i < 10000) {
-            if (i < 5000) {
+        while (i < n) {
+            if (i < (n / 2)) {
                 mas[i] = i;
             }
             else {
-                mas[i] = (i - 10000) * -1;
+                mas[i] = (i - n) * -1;
             }
             i++;
         }
@@ -105,9 +108,9 @@ int main() {
         break;
     }
         if (h > 0 and h < 5) {
-            time_s = shell(mas, 10000);
+            time_s = shell(mas, n);
             printf(" \nВремя сортировки методом Шелла: %f\n ", time_s);
-            time_q = qs(mas, 0, 9999);
+            time_q = qs(mas, 0, n - 1);
             printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
             break;
             
