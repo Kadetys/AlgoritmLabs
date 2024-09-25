@@ -1,114 +1,200 @@
-﻿#include <iostream>
-#include<locale.h>  
-#include<time.h>
-
-double shell(int* items, int count) {
-    int gap;
-    time_t start = clock();
-    for (gap = count / 2; gap > 0; gap /= 2) {
-        for (int i = gap; i < count; ++i) {
-            int temp = items[i];
-            int j = i - gap;
-            while ((j >= 0) && (items[j] > temp)) {
-                items[j + gap] = items[j];
-                j -= gap;
-            }
-            items[j + gap] = temp;
-        }
-    }
-    time_t end = clock();
-    double time = difftime(end, start) / CLOCKS_PER_SEC;
-    return time;
-}
-
-double qs(int* items, int left, int right) //вызов функции: qs(items, 0, count-1);
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include<stdlib.h>
+#include<string.h>
+#include<locale.h>
+#include<stdio.h>
+struct node
 {
-    int i, j;
-    int x, y;
+	char inf[256];  // полезная информация
+	int prioryty;
+	struct node* next; // ссылка на следующий элемент 
+};
+
+//Обращение к списку и его элементам осуществляется посредством указателей :
+
+struct node* head = NULL, * last = NULL, * f = NULL; // указатели на первый и последний элементы списка
+int dlinna = 0;
+
+//Для списка реализованы функции создания, добавления, удаления элемента, просмотра списка, нахождения нужного элемента списка :
+
+// Функции добавления элемента, просмотра списка
+void spstore(void), review(void), del(char* name);
+
+char find_el[256];
+struct node* find(char* name); // функция нахождения элемента
+struct node* get_struct(void); // функция создания элемента
 
 
 
-    i = left; j = right;
+struct node* get_struct(void)
+{
+	struct node* p = NULL;
+	char s[256];
 
-    /* выбор компаранда */
-    x = items[(left + right) / 2];
+	if ((p = (node*)malloc(sizeof(struct node))) == NULL)  // выделяем память под новый элемент списка
+	{
+		printf("Ошибка при распределении памяти\n");
+		exit(1);
+	}
 
-    time_t start = clock();
-    do {
-        while ((items[i] < x) && (i < right)) i++;
-        while ((x < items[j]) && (j > left)) j--;
+	printf("Введите название объекта: \n");   // вводим данные
+	scanf("%s", s);
+	if (*s == 0)
+	{
+		printf("Запись не была произведена\n");
+		return NULL;
+	}
+	strcpy(p->inf, s);
 
-        if (i <= j) {
-            y = items[i];
-            items[i] = items[j];
-            items[j] = y;
-            i++; j--;
-        }
-    } while (i <= j);
+	p->next = NULL;
 
-    if (left < j) qs(items, left, j);
-    if (i < right) qs(items, i, right);
-    time_t end = clock();
-    double time = difftime(end, start) / CLOCKS_PER_SEC;
-    return time;
+	return p;		// возвращаем указатель на созданный элемент
+}
+
+/* Последовательное добавление в список элемента (в конец)*/
+void spstore(void)
+{
+	struct node* p = NULL;
+	p = get_struct();
+	if (head == NULL && p != NULL)	// если списка нет, то устанавливаем голову списка
+	{
+		head = p;
+		last = p;
+	}
+	else if (head != NULL && p != NULL) // список уже есть, то вставляем в конец
+	{
+		last->next = p;
+		last = p;
+	}
+	return;
+}
+
+
+/* Просмотр содержимого списка. */
+void review(void)
+{
+	struct node* struc = head;
+	if (head == NULL)
+	{
+		printf("Список пуст\n");
+	}
+	while (struc)
+	{
+		printf("Имя - %s, \n", struc->inf);
+		struc = struc->next;
+	}
+	return;
+}
+
+
+
+
+/* Поиск элемента по содержимому. */
+struct node* find(char* name)
+{
+	struct node* struc = head;
+	if (head == NULL)
+	{
+		printf("Список пуст\n");
+	}
+	while (struc)
+	{
+		if (strcmp(name, struc->inf) == 0)
+		{
+			printf("Элемент  найден!\n");
+			printf("Элемент: %s\n", struc->inf);
+			return struc;
+		}
+		struc = struc->next;
+
+	}
+	printf("Элемент не найден\n");
+	return NULL;
 
 }
-int main() {
-    setlocale(LC_ALL, "rus");
-    double time_q, time_s;
-    int h = 0;
-    int i = 0;
-    int n[5];
-    int* mas;
-    srand(time(0));
-    printf("Введите пять размеров массивов для сбора аналитики:\n");
-    scanf_s("%d %d %d %d %d", &n[0], &n[1], &n[2],&n[3], &n[4]);
-    for(int j = 0; j<5; j++){
-         mas = (int*)malloc(n[j] * sizeof(int));
-        for (i = 0; i < n[j];  i++) {
-            mas[i] = rand() % (n[j] * 100);
-        }
-        printf("\nСлучайное заполнение массива размером %d выполнено\n", n[j]);
-        time_s = shell(mas, n[j]);
-        printf(" Время сортировки методом Шелла: %f\n ", time_s);
-        time_q = qs(mas, 0, n[j] - 1);
-        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
-        i = 0;
-        while (i < n[j]) {
-            mas[i] = i;
-            i++;
-        }
-        printf("\nЗаполнение массива по возрастанию размером %d выполнено\n", n[j]);
-        time_s = shell(mas, n[j]);
-        printf(" Время сортировки методом Шелла: %f\n ", time_s);
-        time_q = qs(mas, 0, n[j] - 1);
-        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
-        i = 0;
-        while (i < n[j]) {
-            mas[i] = (i - n[j]) * -1;
-            i++;
-        }
-        printf("\nЗаполнение массива по убыванию размером %d выполнено\n", n[j]);
-        time_s = shell(mas, n[j]);
-        printf("Время сортировки методом Шелла: %f\n ", time_s);
-        time_q = qs(mas, 0, n[j] - 1);
-        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
-        i = 0;
-        while (i < n[j]) {
-            if (i < (n[j] / 2)) {
-                mas[i] = i;
-            }
-            else {
-                mas[i] = (i - n[j]) * -1;
-            }
-            i++;
-        }
-        printf("\nЗаполнение массива по возрастанию и убыванию размером %d выполнено\n", n[j]);
-        time_s = shell(mas, n[j]);
-        printf(" Время сортировки методом Шелла: %f\n ", time_s);
-        time_q = qs(mas, 0, n[j] - 1);
-        printf("Время сортировки методом быстрой сортировки:%f\n ", time_q);
-    }
+/* Удаление элемента по содержимому. */
+void del(char* name) {
+	struct node* struc = head;
+	struct node* prev = NULL;
+	int found = 0;
 
-    return 0;
+	if (head == NULL) {
+		printf("Список пуст\n");
+		return;
+	}
+
+	// Проход по списку для поиска и удаления всех совпадающих элементов
+	while (struc) {
+		if (strcmp(name, struc->inf) == 0) {
+			found = 1;  // Элемент найден
+
+			// Удаление первого элемента
+			if (prev == NULL) {
+				head = struc->next;
+				free(struc);
+				struc = head;  // обновляем текущий узел после удаления головы
+			}
+			else {  // Удаление элемента не в начале списка
+				prev->next = struc->next;
+				free(struc);
+				struc = prev->next;  // обновляем текущий узел
+			}
+
+			printf("Элемент удален\n");
+		}
+		else {
+			prev = struc;  // Обновляем предыдущий элемент
+			struc = struc->next;  // Переходим к следующему элементу
+		}
+	}
+
+	if (!found) {
+		printf("Элемент не найден\n");
+	}
+}
+
+int main() {
+	setlocale(LC_ALL, "rus");
+	char s[10];
+	int c = 0;
+	do {
+		printf("\nМеню:\n");
+		printf("1. Добавить элемент\n");
+		printf("2. Просмотреть список\n");
+		printf("3. Удалить элемент\n");
+		printf("4. Поиск элемента\n");
+		printf("5. Выход\n");
+		printf("Выберите один из пунктов: ");
+		scanf_s("%d", &c);
+
+		switch (c) {
+		case 1:
+			spstore();
+			break;
+		case 2:
+
+			review();
+			break;
+
+		case 3:
+			printf("Введите название объекта для удаления: ");
+			scanf_s("%s", s, (unsigned)_countof(s));
+			del(s);
+			break;
+		case 4:
+			printf("Введите элемент для поиска: ");
+			scanf_s("%s", s, (unsigned)_countof(s));
+			*find(s);
+			break;
+
+		case 5:
+			printf("Выход...\n");
+			break;
+		default:
+			printf("Ошибка. Попробуйте снова.\n");
+			break;
+		}
+	} while (c != 5);
+
+	return 0;
 }
