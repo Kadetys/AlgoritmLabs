@@ -30,6 +30,7 @@ struct node* get_struct(void)
 {
 	struct node* p = NULL;
 	char s[256];
+	int prior = 0;
 
 	if ((p = (node*)malloc(sizeof(struct node))) == NULL)  // выделяем память под новый элемент списка
 	{
@@ -44,9 +45,11 @@ struct node* get_struct(void)
 		printf("Запись не была произведена\n");
 		return NULL;
 	}
+	printf("Укажите приоритет:\n");
+	scanf("%d", &prior);
 	strcpy(p->inf, s);
-
-	p->next = NULL;
+	p -> prioryty = prior;
+	p -> next = NULL;
 
 	return p;		// возвращаем указатель на созданный элемент
 }
@@ -101,8 +104,7 @@ struct node* find(char* name)
 	{
 		if (strcmp(name, struc->inf) == 0)
 		{
-			printf("Элемент  найден!\n");
-			printf("Элемент: %s\n", struc->inf);
+			
 			return struc;
 		}
 		struc = struc->next;
@@ -157,6 +159,7 @@ int main() {
 	setlocale(LC_ALL, "rus");
 	char s[10];
 	int c = 0;
+	struct node* vrem;
 	do {
 		printf("\nМеню:\n");
 		printf("1. Добавить элемент\n");
@@ -184,7 +187,11 @@ int main() {
 		case 4:
 			printf("Введите элемент для поиска: ");
 			scanf_s("%s", s, (unsigned)_countof(s));
-			*find(s);
+			vrem = find(s);
+			if (vrem != NULL) {
+				printf("Элемент  найден!\n"); // Вывести данные вне функции, сохранить указатель, вывести номер в структуре
+				printf("Элемент: %s\n Приотритет элемента: %d", vrem->inf, vrem -> prioryty);
+			}
 			break;
 
 		case 5:
