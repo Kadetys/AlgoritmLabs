@@ -60,21 +60,19 @@ struct Node* CreateTree(struct Node* root, struct Node* r, int data)
 	print_tree(r->left, l + 1);
 }
 
-	int find_tree(struct Node* r, int status, int* orig)
+	void find_tree(struct Node* r, int* count, int* orig)
 	{
-		if (r == NULL or status == 1)
+		if (r == NULL)
 		{
-			return 1;
+			return;
 		}
 		if (r->data == *orig) 
 		{
-			printf("Элемент найден\n");
-			status = 1;
-			return 1;
+			*count += 1;
 		}
-		find_tree(r->right, status, orig);
-		find_tree(r->left, status, orig);
-		return 0;
+		find_tree(r->right, count, orig);
+		find_tree(r->left, count, orig);
+		return;
 	}
 //Программа, использующая приведенные функции :
 
@@ -100,16 +98,19 @@ int main()
 	}
 	print_tree(root, 0);
 	int H, find = 1;
-	int itog = 0;
 	while (find) {
 		printf("Хотите начать поиск элемента?\n 0. Нет\n 1. Да\n");
 		scanf("%d", &find);
 		if (find == 1) {
+			int count = 0;
 			printf("Введите элемент, который желаете найти\n");
 			scanf("%d", &H);
-			itog = find_tree(root, 0, &H);
-			if (itog != 1) {
+			find_tree(root, &count, &H);
+			if (count == 0) {
 				printf("Элемент не найден\n");
+			}
+			else {
+				printf("Элемент встречается в дереве %d раз(а)\n", count);
 			}
 		}
 
