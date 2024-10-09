@@ -27,15 +27,15 @@ struct Node* CreateTree(struct Node* root, struct Node* r, int data)
 		r->data = data;
 		if (root == NULL) return r;
 
-		if (data > root->data)	root->left = r;
-		else root->right = r;
+		if (data > root->data)	root->right = r;
+		else root->left = r;
 		return r;
 	}
 
 	if (data > r->data)
-		CreateTree(r, r->left, data);
-	else
 		CreateTree(r, r->right, data);
+	else
+		CreateTree(r, r->left, data);
 
 	return root;
 }
@@ -60,20 +60,20 @@ struct Node* CreateTree(struct Node* root, struct Node* r, int data)
 	print_tree(r->left, l + 1);
 }
 
-	int find_tree(struct Node* r, int status, int* orig)
+	int find_tree(struct Node* r, int* orig)
 	{
 		if (r == NULL)
 		{
 			return 0;
 		}
+		int count = 0;
 		if (r->data == *orig) 
 		{
-			status += 1;
-			return status;
+			count ++;
 		}
-		find_tree(r->right, status, orig);
-		find_tree(r->left, status, orig);
-		return 0;
+			count += find_tree(r->right, orig);
+			count += find_tree(r->left, orig);
+		return count;
 	}
 //Программа, использующая приведенные функции :
 
@@ -83,7 +83,7 @@ int main()
 	int D, start = 1;
 
 	root = NULL;
-	printf("Для окончания заполнения дерева введите значение -1\n");
+	printf("Для завершения заполнения дерева введите значение -1\n");
 	while (start)
 	{
 		int doubly = 0;
@@ -95,7 +95,7 @@ int main()
 			start = 0;
 		}
 		else
-			doubly = find_tree(root, 0, &D);
+			doubly = find_tree(root, &D);
 		if (doubly != 0) {
 			printf("Этот элемент уже добавлен в дерево!\n");
 			continue;
@@ -112,7 +112,7 @@ int main()
 			int count = 0;
 			printf("Введите элемент, который желаете найти\n");
 			scanf("%d", &H);
-			count = find_tree(root, count, &H);
+			count = find_tree(root, &H);
 			if (count == 0) {
 				printf("Элемент не найден\n");
 			}
