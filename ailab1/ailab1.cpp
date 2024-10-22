@@ -12,6 +12,7 @@ struct Node {
 struct Node* root;
 
 struct Node* CreateTree(struct Node* root, struct Node* r, int data)
+
 {
 	if (r == NULL)
 	{
@@ -21,7 +22,7 @@ struct Node* CreateTree(struct Node* root, struct Node* r, int data)
 			printf("Ошибка выделения памяти");
 			exit(0);
 		}
-
+	
 		r->left = NULL;
 		r->right = NULL;
 		r->data = data;
@@ -50,14 +51,14 @@ struct Node* CreateTree(struct Node* root, struct Node* r, int data)
 		return;
 	}
 
-	print_tree(r->right, l + 1);
+	print_tree(r->left, l + 1);
 	for (int i = 0; i < l; i++)
 	{
 		printf(" ");
 	}
 
 	printf("%d\n", r->data);
-	print_tree(r->left, l + 1);
+	print_tree(r->right, l + 1);
 }
 
 	int find_tree(struct Node* r, int* orig)
@@ -93,6 +94,7 @@ int main()
 		{
 			printf("Построение дерева окончено\n\n");
 			start = 0;
+			continue;
 		}
 		else
 			doubly = find_tree(root, &D);
