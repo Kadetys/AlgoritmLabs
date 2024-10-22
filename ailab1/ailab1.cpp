@@ -60,7 +60,8 @@ struct Node* CreateTree(struct Node* root, struct Node* r, int data)
 	printf("%d\n", r->data);
 	print_tree(r->right, l + 1);
 }
-
+		// Сложность алгоритма равна O(n)
+		// Это связано с тем, что функция поиска использует рекурсию
 	int find_tree(struct Node* r, int* orig)
 	{
 		if (r == NULL)
