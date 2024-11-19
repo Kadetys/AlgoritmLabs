@@ -1,128 +1,65 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#include<stdlib.h>
-#include<string.h>
-#include<locale.h>
-#include<stdio.h>
-struct Node {
-	int data;
-	struct Node* left;
-	struct Node* right;
-};
+﻿
+#include <locale.h>
+#include <iostream>
+#include <cstdlib> // для rand()
 
-struct Node* root;
+using namespace std;
 
-struct Node* CreateTree(struct Node* root, struct Node* r, int data)
-
-{
-	if (r == NULL)
-	{
-		r = (struct Node*)malloc(sizeof(struct Node));
-		if (r == NULL)
-		{
-			printf("Ошибка выделения памяти");
-			exit(0);
-		}
-	
-		r->left = NULL;
-		r->right = NULL;
-		r->data = data;
-		if (root == NULL) return r;
-
-		if (data > root->data)	root->right = r;
-		else root->left = r;
-		return r;
-	}
-
-	if (data > r->data)
-		CreateTree(r, r->right, data);
-	else
-		CreateTree(r, r->left, data);
-
-	return root;
+// Функция для генерации матрицы смежности
+int** GenMat(int n) {
+    int** matrix = new int* [n];
+    for (int i = 0; i < n; i++) {
+        matrix[i] = new int[n];
+        for (int j = 0; j < n; j++) {
+            matrix[i][j] = rand() % 2;
+        }
+    }
+    return matrix;
 }
 
-//Функция вывода дерева на экран(дерево выводится повёрнутым на 90 градусов, корень находится слева) :
-
-	void print_tree(struct Node* r, int l)
-{
-
-	if (r == NULL)
-	{
-		return;
-	}
-
-	print_tree(r->left, l + 1);
-	for (int i = 0; i < l; i++)
-	{
-		printf(" ");
-	}
-
-	printf("%d\n", r->data);
-	print_tree(r->right, l + 1);
+// Функция для вывода матрицы на экран
+void PrintMat(int** matrix, int n) { // добавлена n для корректного вывода
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
-		// Сложность алгоритма равна O(n)
-		// Это связано с тем, что функция поиска использует рекурсию
-	int find_tree(struct Node* r, int* orig)
-	{
-		if (r == NULL)
-		{
-			return 0;
-		}
-		int count = 0;
-		if (r->data == *orig) 
-		{
-			count ++;
-		}
-			count += find_tree(r->right, orig);
-			count += find_tree(r->left, orig);
-		return count;
-	}
-//Программа, использующая приведенные функции :
 
-int main()
-{
-	setlocale(LC_ALL, "");
-	int D, start = 1;
+int main() {
+    setlocale(LC_ALL, "");
+    int n1, n2;
 
-	root = NULL;
-	printf("Для завершения заполнения дерева введите значение -1\n");
-	while (start)
-	{
-		int doubly = 0;
-		printf("Введите число: ");
-		scanf("%d", &D);
-		if (D == -1)
-		{
-			printf("Построение дерева окончено\n\n");
-			start = 0;
-			continue;
-		}
-		else
-			doubly = find_tree(root, &D);
-		if (doubly != 0) {
-			printf("Этот элемент уже добавлен в дерево!\n");
-			continue;
-		}
-			root = CreateTree(root, root, D);
+    cout << "Введите количество вершин для графа G1: ";
+    cin >> n1;
+    cout << "Введите количество вершин для графа G2: ";
+    cin >> n2;
 
-	}
-	print_tree(root, 0);
-	int H, find = 1;
-	while (find) {
-		printf("Хотите начать поиск элемента?\n 0. Нет\n 1. Да\n");
-		scanf("%d", &find);
-		if (find == 1) {
-			int count = 0;
-			printf("Введите элемент, который желаете найти\n");
-			scanf("%d", &H);
-			count = find_tree(root, &H);
-			if (count == 0) {
-				printf("Элемент не найден\n");
-			}
-			else {
-				printf("Элемент встречается в дереве %d раз(а)\n", count);
-			}
-		}
-	}
-	return 0;
+    if (n1 <= 0 || n2 <= 0) {
+        cout << "Количество вершин должно быть больше 0." << endl;
+        return 1;
+    }
+
+    int** Mat1 = GenMat(n1);
+    int** Mat2 = GenMat(n2);
+
+    cout << "Матрица смежности G1:" << endl;
+    PrintMat(Mat1, n1); // передаем размер матрицы
+
+    cout << "\nМатрица смежности G2:" << endl;
+    PrintMat(Mat2, n2); // передаем размер матрицы
+
+    // Обязательно освобождаем память!
+    for (int i = 0; i < n1; i++) {
+        delete[] Mat1[i];
+    }
+    delete[] Mat1;
+
+    for (int i = 0; i < n2; i++) {
+        delete[] Mat2[i];
+    }
+    delete[] Mat2;
+
+    return 0;
 }
