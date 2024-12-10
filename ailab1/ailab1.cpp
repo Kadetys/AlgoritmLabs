@@ -1,70 +1,84 @@
-﻿#include <time.h>
-#include <iostream>
-#include<locale.h>
+﻿#include <iostream>
+#include <locale>
+#include <queue>
+#include <limits>
 
-int main(void)
-{
-	setlocale(LC_ALL, "");
-	setvbuf(stdin, NULL, _IONBF, 0);
-	setvbuf(stdout, NULL, _IONBF, 0);
+using namespace std;
 
-	clock_t start, end; // объявляем переменные для определения времени выполнения
-
-	int i = 0, j = 0, r;
-	int** a;
-	int** b;
-	int** c;
-	int elem_c = 0;
-	int m;
-	printf("Введите размер квадратной матрицы \n");
-	scanf_s("%d", &m);
-	a = (int**)malloc(m * sizeof(int*));
-	b = (int**)malloc(m * sizeof(int*));
-	c = (int**)malloc(m * sizeof(int*));
-
-	for (i; i < m; i++) {
-		a[i] = (int*)malloc(m * sizeof(int));
-		b[i] = (int*)malloc(m * sizeof(int));
-		c[i] = (int*)malloc(m * sizeof(int));
+int** createG(int len) {
+	int** G;
+	srand(time(0));
+	G = new int* [len];
+	for (int i = 0; i < len; i++) {
+		G[i] = new int[len];
 	}
-	srand(time(NULL)); // инициализируем параметры генератора случайных чисел
-	while (i < m)
-	{
-		while (j < m)
-		{
-			a[i][j] = rand() % 100; // заполняем массив случайными числами
-			j++;
-		}
-		i++;
-	}
-	srand(time(NULL)); // инициализируем параметры генератора случайных чисел
-	i = 0; j = 0;
-	while (i < m)
-	{
-		while (j < m)
-		{
-			b[i][j] = rand() % 100; // заполняем массив случайными числами
-			j++;
-		}
-		i++;
-	}
-	start = clock();
-
-	for (i = 0; i < m; i++)
-	{
-		for (j = 0; j < m; j++)
-		{
-			elem_c = 0;
-			for (r = 0; r < m; r++)
-			{
-				elem_c = elem_c + a[i][r] * b[r][j];
-				c[i][j] = elem_c;
+	for (int i = 0; i < len; i++) {
+		for (int j = i; j < len; j++) {
+			if (i == j) G[i][i] = 0;
+			else {
+				G[i][j] = rand() % 10;
+				G[j][i] = G[i][j];
 			}
 		}
-
 	}
-	end = clock();
-	printf("%f\n", float(end - start) / float(CLOCKS_PER_SEC));
+	return G;
+}
 
-	return(0);
+void printG(int** G, int len) {
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < len; j++) {
+			cout << G[i][j] << " ";
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+}
+
+//обход в ширину + paccтояние
+void BFSDD(int** G, int size, int s, int* dist) {
+
+	queue <int> Q;
+	Q.push(s);
+	dist[s] = 0;
+
+	while (!Q.empty()) {
+		s = Q.front();
+		Q.pop();
+		for (int i = 0; i < size; i++) {
+			if (G[s][i] != 0 && dist[i] + G[s][i] < dist[i]) {
+				dist[i] = dist[s] + G[s][i];
+				Q.push(i);
+			}
+		}
+	}
+}
+
+int main() {
+	setlocale(LC_ALL, "");
+	int** G = NULL;
+	int s, size;
+	cout << "Введите размер графа: ";
+	cin >> size;
+	cout << endl;
+	cout << "Введите начальную вершину обхода: ";
+	cin >> s;
+
+	G = createG(size);
+	printG(G, size);
+	cout << "\n";
+
+	int* dist = new int[size * sizeof(int)];
+	for (int i = 0; i < size; i++) {
+		dist[i] = INT_MAX;
+	}
+
+	cout << "Обход вершины " << s << ":" << endl;
+
+	BFSDD(G, size, s, dist);
+
+	for (int i = 0; i < size; i++) {
+		cout << dist[i] << " ";
+	}
+
+	return 0;
 }
