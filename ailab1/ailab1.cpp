@@ -1,70 +1,108 @@
-﻿#include <time.h>
-#include <iostream>
-#include<locale.h>
+﻿#include <iostream> 
+#include <queue> 
+#include <climits> 
 
-int main(void)
+using namespace std;
+
+
+queue <int> Q;
+
+int** createG(int size)
 {
-	setlocale(LC_ALL, "");
-	setvbuf(stdin, NULL, _IONBF, 0);
-	setvbuf(stdout, NULL, _IONBF, 0);
-
-	clock_t start, end; // объявляем переменные для определения времени выполнения
-
-	int i = 0, j = 0, r;
-	int** a;
-	int** b;
-	int** c;
-	int elem_c = 0;
-	int m;
-	printf("Введите размер квадратной матрицы \n");
-	scanf_s("%d", &m);
-	a = (int**)malloc(m * sizeof(int*));
-	b = (int**)malloc(m * sizeof(int*));
-	c = (int**)malloc(m * sizeof(int*));
-
-	for (i; i < m; i++) {
-		a[i] = (int*)malloc(m * sizeof(int));
-		b[i] = (int*)malloc(m * sizeof(int));
-		c[i] = (int*)malloc(m * sizeof(int));
-	}
-	srand(time(NULL)); // инициализируем параметры генератора случайных чисел
-	while (i < m)
+	int** G;
+	G = (int**)malloc(size * sizeof(int*));
+	for (int i = 0; i < size; i++)
 	{
-		while (j < m)
+		G[i] = (int*)malloc(size * sizeof(int));
+	}
+	for (int i = 0; i < size; i++)
+	{
+		G[i][i] = 0;
+		for (int j = i + 1; j < size; j++)
 		{
-			a[i][j] = rand() % 100; // заполняем массив случайными числами
-			j++;
+			G[i][j] = rand() % 2;
+			G[j][i] = G[i][j];
 		}
-		i++;
 	}
-	srand(time(NULL)); // инициализируем параметры генератора случайных чисел
-	i = 0; j = 0;
-	while (i < m)
-	{
-		while (j < m)
-		{
-			b[i][j] = rand() % 100; // заполняем массив случайными числами
-			j++;
-		}
-		i++;
-	}
-	start = clock();
+	return G;
+}
 
-	for (i = 0; i < m; i++)
+void printG(int** G, int size)
+{
+	for (int i = 0; i < size; i++)
 	{
-		for (j = 0; j < m; j++)
+		for (int j = 0; j < size; j++)
 		{
-			elem_c = 0;
-			for (r = 0; r < m; r++)
-			{
-				elem_c = elem_c + a[i][r] * b[r][j];
-				c[i][j] = elem_c;
+			cout << G[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+void DFS(int** G, int size, int start, int* vis) {
+	vis[start] = 1;
+
+	cout << start << endl;
+
+	for (int i = 0; i < size; i++) {
+		if (G[start][i] == 1 && vis[i] == 0)
+			DFS(G, size, i, vis);
+	}
+
+
+}
+
+void bFS(int** G, int size, int start, int* dist) { // vis ������ ���������� ������ 
+	Q.push(start);
+	dist[start] = 0;
+
+
+	while (!Q.empty()) {
+		start = Q.front();
+		Q.pop();
+		for (int i = 0; i < size; i++) {
+			if (G[start][i] == 1 && dist[i] == INT_MAX) {
+				Q.push(i);
+				dist[i] = dist[start] + G[start][i];
 			}
 		}
-
 	}
-	end = clock();
-	printf("%f\n", float(end - start) / float(CLOCKS_PER_SEC));
+}
 
-	return(0);
+int main() {
+	srand(time(NULL));
+
+	int** G = NULL;
+	int nG, s;
+
+
+	cout << "Vvedite razmer: ";
+	cin >> nG;
+
+	G = createG(nG);
+
+	printG(G, nG);
+	cout << endl;
+
+	cout << "Vvedite start: ";
+	cin >> s;
+	cout << endl;
+
+	int* dist = NULL;
+	dist = (int*)malloc(nG * sizeof(int));
+
+
+	for (int i = 0; i < nG; i++) {
+		dist[i] = INT_MAX;
+	}
+
+
+	bFS(G, nG, s, dist);
+	for (int i = 0; i < nG; i++) {
+		cout << dist[i] << " ";
+	}
+
+	cout << endl;
+
+	return 0;
 }
