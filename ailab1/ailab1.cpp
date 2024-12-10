@@ -1,6 +1,7 @@
 ﻿#include <iostream> 
 #include <queue> 
 #include <climits> 
+#include <locale.h>
 
 using namespace std;
 
@@ -52,7 +53,7 @@ void DFS(int** G, int size, int start, int* vis) {
 
 }
 
-void bFS(int** G, int size, int start, int* dist) { // vis ������ ���������� ������ 
+void bFS(int** G, int size, int start, int* dist) {
 	Q.push(start);
 	dist[start] = 0;
 
@@ -71,12 +72,13 @@ void bFS(int** G, int size, int start, int* dist) { // vis ������ �
 
 int main() {
 	srand(time(NULL));
+	setlocale(LC_ALL, "RU");
 
 	int** G = NULL;
 	int nG, s;
 
 
-	cout << "Vvedite razmer: ";
+	cout << "Введите размер: ";
 	cin >> nG;
 
 	G = createG(nG);
@@ -84,7 +86,7 @@ int main() {
 	printG(G, nG);
 	cout << endl;
 
-	cout << "Vvedite start: ";
+	cout << "Введите старт: ";
 	cin >> s;
 	cout << endl;
 
@@ -96,7 +98,7 @@ int main() {
 		dist[i] = INT_MAX;
 	}
 
-
+	cout << "Размер:";
 	bFS(G, nG, s, dist);
 	for (int i = 0; i < nG; i++) {
 		cout << dist[i] << " ";
